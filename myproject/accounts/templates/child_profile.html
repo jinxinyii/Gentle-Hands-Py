@@ -8,11 +8,17 @@
 </head>
 <body class="bg-gray-100 flex flex-col items-center min-h-screen p-4">
 
+<<<<<<< HEAD
    
     <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 mb-6">
         <h2 class="text-2xl font-bold text-center mb-4">Child Profile</h2>
 
       
+=======
+    <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 mb-6">
+        <h2 class="text-2xl font-bold text-center mb-4">Child Profile</h2>
+
+>>>>>>> 83335d3ab27b3593a7b4d4b85fc0ae7d6c8b83bd
         <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-4">
                 <img id="profilePic" src="https://via.placeholder.com/80" alt="Profile Pic" class="rounded-full w-20 h-20 border-2 border-pink-500">
@@ -27,7 +33,10 @@
             </div>
         </div>
 
+<<<<<<< HEAD
     
+=======
+>>>>>>> 83335d3ab27b3593a7b4d4b85fc0ae7d6c8b83bd
         <div class="flex justify-center gap-4">
             <button id="viewMedicalRecords" class="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600">
                 View Medical Records
@@ -35,7 +44,10 @@
         </div>
     </div>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 83335d3ab27b3593a7b4d4b85fc0ae7d6c8b83bd
     <div id="medicalRecords" class="hidden w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 mb-6">
         <h2 class="text-2xl font-bold text-center mb-4">Medical Records</h2>
 
@@ -58,12 +70,18 @@
             </div>
         </div>
     </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 83335d3ab27b3593a7b4d4b85fc0ae7d6c8b83bd
  
     <div id="editModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
         <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
             <h2 class="text-2xl font-bold text-center mb-4">Edit Profile</h2>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 83335d3ab27b3593a7b4d4b85fc0ae7d6c8b83bd
        
             <div class="flex flex-col items-center mb-4">
                 <label for="uploadProfilePic" class="cursor-pointer">
@@ -72,7 +90,10 @@
                 </label>
                 <input type="file" id="uploadProfilePic" accept="image/*" class="hidden">
             </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 83335d3ab27b3593a7b4d4b85fc0ae7d6c8b83bd
         
             <div class="space-y-3">
                 <div>
@@ -96,7 +117,10 @@
                 </div>
             </div>
 
+<<<<<<< HEAD
          
+=======
+>>>>>>> 83335d3ab27b3593a7b4d4b85fc0ae7d6c8b83bd
             <div class="mt-4 flex justify-between">
                 <button id="saveEdit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Save</button>
                 <button id="cancelEdit" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancel</button>
@@ -104,17 +128,27 @@
         </div>
     </div>
 
+<<<<<<< HEAD
     <script>
         
+=======
+    <script> 
+>>>>>>> 83335d3ab27b3593a7b4d4b85fc0ae7d6c8b83bd
         document.getElementById("viewMedicalRecords").addEventListener("click", function () {
             document.getElementById("medicalRecords").classList.toggle("hidden");
         });
 
+<<<<<<< HEAD
       
         document.getElementById("editBtn").addEventListener("click", function () {
             document.getElementById("editModal").classList.remove("hidden");
 
         
+=======
+        document.getElementById("editBtn").addEventListener("click", function () {
+            document.getElementById("editModal").classList.remove("hidden");
+
+>>>>>>> 83335d3ab27b3593a7b4d4b85fc0ae7d6c8b83bd
             let fullName = document.getElementById("childName").textContent.split(" ");
             document.getElementById("editFirstName").value = fullName[0];
             document.getElementById("editLastName").value = fullName[1];
@@ -122,13 +156,18 @@
             document.getElementById("editAge").value = document.getElementById("childAge").textContent;
             document.getElementById("editProfilePic").src = document.getElementById("profilePic").src;
         });
+<<<<<<< HEAD
 
     
+=======
+ 
+>>>>>>> 83335d3ab27b3593a7b4d4b85fc0ae7d6c8b83bd
         document.getElementById("saveEdit").addEventListener("click", function () {
             let firstName = document.getElementById("editFirstName").value;
             let lastName = document.getElementById("editLastName").value;
             let category = document.getElementById("editCategory").value;
             let age = document.getElementById("editAge").value;
+<<<<<<< HEAD
 
           
             document.getElementById("childName").textContent = `${firstName} ${lastName}`;
@@ -140,11 +179,24 @@
         });
 
       
+=======
+       
+            document.getElementById("childName").textContent = `${firstName} ${lastName}`;
+            document.getElementById("childCategory").textContent = `${category} | Age: ${age}`;
+            document.getElementById("profilePic").src = document.getElementById("editProfilePic").src;
+   
+            document.getElementById("editModal").classList.add("hidden");
+        });
+
+>>>>>>> 83335d3ab27b3593a7b4d4b85fc0ae7d6c8b83bd
         document.getElementById("cancelEdit").addEventListener("click", function () {
             document.getElementById("editModal").classList.add("hidden");
         });
 
+<<<<<<< HEAD
       
+=======
+>>>>>>> 83335d3ab27b3593a7b4d4b85fc0ae7d6c8b83bd
         document.querySelector(".remove-btn").addEventListener("click", function () {
             if (confirm("Are you sure you want to remove this child?")) {
                 document.querySelector(".w-full.max-w-4xl").remove();
