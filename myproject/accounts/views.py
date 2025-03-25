@@ -36,6 +36,8 @@ def login_view(request):
 def dashboard(request):
     return render(request, 'dashboard.html')
 
-@login_required
 def dashboard_view(request):
-    return redirect('childrecord')
+    return render(request, 'dashboard.html')
+
+def medication_view(request):
+    return render(request, 'medication.html')

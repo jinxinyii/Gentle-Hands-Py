@@ -7,19 +7,20 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 flex flex-col items-center min-h-screen p-6">
-
+<<<<<<< HEAD
     <!-- Dashboard Header -->
+=======
+
+>>>>>>> 7747c96b698faf4c5fd4c49c391bae42cbfffa19
     <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 mb-6 text-center">
         <h2 class="text-3xl font-bold text-gray-800">Child Records Dashboard</h2>
     </div>
 
-    <!-- Search Bar -->
     <div class="w-full max-w-3xl mb-4">
         <input type="text" id="search" placeholder="Search Children by Name/ID" 
             class="w-full border p-3 rounded-md focus:ring-2 focus:ring-pink-400">
     </div>
 
-    <!-- Child List Table -->
     <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6">
         <h3 class="text-2xl font-bold mb-4 text-center text-gray-800">Child List</h3>
 
@@ -48,12 +49,14 @@
         </table>
     </div>
 
-    <!-- Register New Child Button -->
     <div class="mt-6">
+            <button onclick="window.history.back()" 
+                class="bg-pink-500 text-white px-6 py-3 rounded hover:bg-pink-600">
+                ← Back
+            </button>  
         <button id="registerBtn" class="bg-pink-500 text-white px-6 py-3 rounded hover:bg-pink-600">Register New Child</button>
     </div>
 
-    <!-- Edit Modal (Hidden by Default) -->
     <div id="editModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
         <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
             <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Edit Child Information</h2>
@@ -76,7 +79,6 @@
                 </div>
             </div>
 
-            <!-- Buttons -->
             <div class="mt-4 flex justify-between">
                 <button id="saveEdit" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Save</button>
                 <button id="cancelEdit" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancel</button>
@@ -85,7 +87,6 @@
     </div>
 
     <script>
-        // Search Functionality
         document.getElementById('search').addEventListener('input', function () {
             let filter = this.value.toLowerCase();
             let rows = document.querySelectorAll("#table-body tr");
@@ -95,44 +96,28 @@
                 row.style.display = text.includes(filter) ? "" : "none";
             });
         });
-
-        // Edit Functionality
         document.querySelectorAll('.edit-btn').forEach((button, index) => {
             button.addEventListener('click', function () {
                 let row = this.closest("tr");
                 document.getElementById("editFirstName").value = row.children[1].textContent;
                 document.getElementById("editLastName").value = row.children[2].textContent;
                 document.getElementById("editCategory").value = row.children[3].textContent;
-
-                // Store row index
                 document.getElementById("editingRowIndex").value = index;
-
-                // Show modal
                 document.getElementById("editModal").classList.remove("hidden");
             });
         });
-
-        // Save Edited Data
         document.getElementById("saveEdit").addEventListener("click", function () {
             let index = document.getElementById("editingRowIndex").value;
             let tableRows = document.querySelectorAll("#table-body tr");
             let row = tableRows[index];
-
-            // Update table with new values
             row.children[1].textContent = document.getElementById("editFirstName").value;
             row.children[2].textContent = document.getElementById("editLastName").value;
             row.children[3].textContent = document.getElementById("editCategory").value;
-
-            // Hide edit modal
             document.getElementById("editModal").classList.add("hidden");
         });
-
-        // Cancel Edit
         document.getElementById("cancelEdit").addEventListener("click", function () {
             document.getElementById("editModal").classList.add("hidden");
         });
-
-        // Remove Functionality
         document.querySelectorAll('.remove-btn').forEach(button => {
             button.addEventListener('click', function () {
                 if (confirm("Are you sure you want to remove this child?")) {
@@ -140,8 +125,6 @@
                 }
             });
         });
-
-        // Register New Child - Open Form
         document.getElementById("registerBtn").addEventListener("click", function () {
             window.location.href = "{% url 'registerchild' %}";
         });
