@@ -20,32 +20,41 @@
         </div>        
         <div class="relative flex-1 flex items-center justify-center bg-cover bg-center" style="background-image: url('{% static 'image.jpg' %}');">
             <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+            <div class="relative text-center text-white px-4">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-pink-300">Medication Page</h1>
+            </div>
+        </div>
 
         <div id="sidebar" class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-50">
             <div class="flex justify-center py-6">
                 <img src="{% static 'logo.jpg' %}" alt="Gentle Hands Logo" class="h-16">
             </div>
             <nav class="flex flex-col space-y-4 px-6">
-                <a href="" class="flex items-center space-x-2 text-black font-medium hover:text-pink-500">
-                    <span>🏠</span> <span>Medical</span>
+                <a href="{% url 'dashboard' %}" class="flex items-center space-x-2 text-black font-medium hover:text-pink-500">
+                    <span>🏠</span> <span>Home</span>
                 </a>
-                <a href="child_profile.html" class="flex items-center space-x-2 text-black font-medium hover:text-pink-500">
+                <a href="{% url 'medic' %}" class="flex items-center space-x-2 text-black font-medium hover:text-pink-500">
+                    <span>💊</span> <span>Medical</span>
+                </a>
+                <a href="{% url 'growth_data' %}" class="flex items-center space-x-2 text-black font-medium hover:text-pink-500">
                     <span>⭐</span> <span>Growth Data</span>
                 </a>
-                <a href="#" class="flex items-center space-x-2 text-black font-medium hover:text-pink-500">
+                <a href="{% url 'immunization_list' %}" class="flex items-center space-x-2 text-black font-medium hover:text-pink-500">
                     <span>✍</span> <span>Immunization</span>
                 </a>
-                <a href="#" class="flex items-center space-x-2 text-black font-medium hover:text-pink-500">
-                    <span>🔔</span> <span>Appointments</span>
+                <a href="{% url 'appointment_list' %}" class="flex items-center space-x-2 text-black font-medium hover:text-pink-500">
+                    <span>🔔</span> <span>Appointment</span>
                 </a>
-                <a href="#" class="flex items-center space-x-2 text-black font-medium hover:text-pink-500">
+                <a href="{% url 'illness_list' %}" class="flex items-center space-x-2 text-black font-medium hover:text-pink-500">
                     <span>📄</span> <span>Illness</span>
                 </a>
-                <a href="#" class="flex items-center space-x-2 text-black font-medium hover:text-pink-500">
-                    <span>🚪</span> <span>Log Out</span>
-                </a>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="flex items-center space-x-2 text-black font-medium hover:text-pink-500">
+                        <span>🚪</span> <span>Log Out</span>
+                    </button>
+                </form>
             </nav>
-        </div>
         </div>
         <div id="overlay" class="fixed hidden inset-0 bg-black bg-opacity-50 z-40"></div>
     </div>

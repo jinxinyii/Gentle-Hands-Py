@@ -19,6 +19,12 @@ This is a Django-based web application for user registration, login, and homepag
 - User Logout
 - Homepage
 - Dashboard
+- Child Records
+- Medication Management
+- Illness Tracking
+- Appointment Scheduling
+- Immunization Records
+- Medic Finder
 
 ## Setup Instructions
 
@@ -75,6 +81,15 @@ The HTML templates for the application are located in the `accounts/templates` d
 - `login.html`: Login template
 - `dashboard.html`: Dashboard template
 - `logout.html`: Logout template
+- `childrecord.html`: Child Records Dashboard template
+- `registerChild.html`: Child Registration template
+- `medication.html`: Medication Management template
+- `medication_list.html`: Medication List template
+- `illness_list.html`: Illness List template
+- `appointment_list.html`: Appointment List template
+- `immunization.html`: Immunization Records template
+- `growth_data.html`: Growth Data template
+- `medic.html`: Medic Finder template
 
 ## Admin
 

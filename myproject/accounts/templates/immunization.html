@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Immunization</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% load static %}
+</head>
+<body class="bg-gray-200 flex justify-center items-center min-h-screen p-4">
+    <div class="w-full max-w-7xl bg-white p-8 rounded-lg shadow-lg">
+    <div class="flex flex-col md:flex-row items-center justify-between pb-6 border-b">
+    <div class="flex items-center gap-4">
+        <button class="text-3xl md:text-4xl">&#9776;</button>
+        <img src="{% static 'logo.jpg' %}" alt="Gentle Hands Logo" class="h-16 md:h-20">
+    </div>
+
+    <div class="flex gap-2 mt-4 md:mt-0">
+        <button id="backBtn" onclick="window.location.href='{% url 'dashboard' %}'" class="bg-pink-500 text-white px-6 py-3 rounded-lg font-semibold text-lg">Back</button>
+        <button id="addImmunisationBtn" class="bg-pink-500 text-white px-6 py-3 rounded-lg font-semibold text-lg">Add Immunisation</button>
+    </div>
+    </div>  
+
+        <div class="mt-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <input type="text" id="searchBar" placeholder="Search immunisations..." class="border px-4 py-2 w-full md:w-2/3 text-lg rounded-lg border-pink-500">
+            <select id="filterCategory" class="border px-4 py-2 w-full md:w-1/4 rounded-lg">
+                <option value="">All Groups</option>
+                <option value="Infants">Infants</option>
+                <option value="Toddlers">Toddlers</option>
+                <option value="Children">Children</option>
+            </select>
+        </div>
+
+        <h2 class="text-3xl font-bold text-center mt-6">Upcoming Immunization</h2>
+
+<div class="mt-6 overflow-x-auto">
+    <table class="w-full border-collapse border border-gray-400 text-left text-lg md:text-xl">
+        <thead class="bg-gray-400 text-white">
+            <tr>
+                <th class="border border-gray-500 px-6 py-3 font-semibold">Group name</th>
+                <th class="border border-gray-500 px-6 py-3 font-semibold">Patient name</th>
+                <th class="border border-gray-500 px-6 py-3 font-semibold">Vaccine</th>
+                <th class="border border-gray-500 px-6 py-3 font-semibold">Dose no.</th>
+                <th class="border border-gray-500 px-6 py-3 font-semibold">Date Due</th>
+                <th class="border border-gray-500 px-6 py-3 font-semibold">Age when due</th>
+                <th class="border border-gray-500 px-6 py-3 font-semibold">Comments</th>
+            </tr>
+        </thead>
+        <tbody id="immunisationTableBody">
+            <tr>
+                <td class="border border-gray-500 px-6 py-4">Infants</td>
+                <td class="border border-gray-500 px-6 py-4">John Doe</td>
+                <td class="border border-gray-500 px-6 py-4">Hepatitis B</td>
+                <td class="border border-gray-500 px-6 py-4">1</td>
+                <td class="border border-gray-500 px-6 py-4">2025-04-10</td>
+                <td class="border border-gray-500 px-6 py-4">At Birth</td>
+                <td class="border border-gray-500 px-6 py-4">First dose</td>
+            </tr>
+            <tr>
+                <td class="border border-gray-500 px-6 py-4">Toddlers</td>
+                <td class="border border-gray-500 px-6 py-4">Emma Watson</td>
+                <td class="border border-gray-500 px-6 py-4">MMR</td>
+                <td class="border border-gray-500 px-6 py-4">1</td>
+                <td class="border border-gray-500 px-6 py-4">2025-06-15</td>
+                <td class="border border-gray-500 px-6 py-4">12 months</td>
+                <td class="border border-gray-500 px-6 py-4">To prevent measles</td>
+            </tr>
+            <tr>
+                <td class="border border-gray-500 px-6 py-4">Children</td>
+                <td class="border border-gray-500 px-6 py-4">Liam Smith</td>
+                <td class="border border-gray-500 px-6 py-4">DTP</td>
+                <td class="border border-gray-500 px-6 py-4">2</td>
+                <td class="border border-gray-500 px-6 py-4">2025-08-20</td>
+                <td class="border border-gray-500 px-6 py-4">5 years</td>
+                <td class="border border-gray-500 px-6 py-4">Booster dose</td>
+            </tr>
+            <tr>
+                <td class="border border-gray-500 px-6 py-4">Infants</td>
+                <td class="border border-gray-500 px-6 py-4">Sophia Brown</td>
+                <td class="border border-gray-500 px-6 py-4">Polio</td>
+                <td class="border border-gray-500 px-6 py-4">3</td>
+                <td class="border border-gray-500 px-6 py-4">2025-05-30</td>
+                <td class="border border-gray-500 px-6 py-4">6 months</td>
+                <td class="border border-gray-500 px-6 py-4">Final primary dose</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+    </div>
+
+    <div id="immunisationModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+            <h2 class="text-xl font-bold mb-4">Add Immunization</h2>
+            <input type="text" id="groupName" placeholder="Group Name" class="border w-full px-4 py-2 mb-2 rounded-lg">
+            <input type="text" id="patientName" placeholder="Patient Name" class="border w-full px-4 py-2 mb-2 rounded-lg">
+            <input type="text" id="vaccine" placeholder="Vaccine" class="border w-full px-4 py-2 mb-2 rounded-lg">
+            <input type="number" id="doseNo" placeholder="Dose No." class="border w-full px-4 py-2 mb-2 rounded-lg">
+            <input type="date" id="dateDue" class="border w-full px-4 py-2 mb-2 rounded-lg">
+            <input type="text" id="ageWhenDue" placeholder="Age When Due" class="border w-full px-4 py-2 mb-2 rounded-lg">
+            <input type="text" id="comments" placeholder="Comments" class="border w-full px-4 py-2 mb-2 rounded-lg">
+            <div class="flex justify-end gap-2">
+                <button id="closeModal" class="bg-gray-400 text-white px-4 py-2 rounded-lg">Cancel</button>
+                <button id="saveImmunisation" class="bg-green-500 text-white px-4 py-2 rounded-lg">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("addImmunisationBtn").addEventListener("click", function() {
+            document.getElementById("immunisationModal").classList.remove("hidden");
+        });
+        
+        document.getElementById("closeModal").addEventListener("click", function() {
+            document.getElementById("immunisationModal").classList.add("hidden");
+        });
+
+        document.getElementById("saveImmunisation").addEventListener("click", function() {
+            let groupName = document.getElementById("groupName").value;
+            let patientName = document.getElementById("patientName").value;
+            let vaccine = document.getElementById("vaccine").value;
+            let doseNo = document.getElementById("doseNo").value;
+            let dateDue = document.getElementById("dateDue").value;
+            let ageWhenDue = document.getElementById("ageWhenDue").value;
+            let comments = document.getElementById("comments").value;
+            
+            let newRow = `<tr>
+                <td class='border border-gray-500 px-6 py-4'>${groupName}</td>
+                <td class='border border-gray-500 px-6 py-4'>${patientName}</td>
+                <td class='border border-gray-500 px-6 py-4'>${vaccine}</td>
+                <td class='border border-gray-500 px-6 py-4'>${doseNo}</td>
+                <td class='border border-gray-500 px-6 py-4'>${dateDue}</td>
+                <td class='border border-gray-500 px-6 py-4'>${ageWhenDue}</td>
+                <td class='border border-gray-500 px-6 py-4'>${comments}</td>
+            </tr>`;
+            
+            document.getElementById("immunisationTableBody").innerHTML += newRow;
+            document.getElementById("immunisationModal").classList.add("hidden");
+        });
+    </script>
+</body>
+</html>

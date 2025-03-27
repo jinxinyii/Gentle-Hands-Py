@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% load static %}
+</head>
+<body class="bg-gray-200 flex justify-center items-center min-h-screen p-6">
+    <div class="w-full max-w-7xl bg-white p-8 rounded-lg shadow-lg">
+        
+        <div class="flex flex-col md:flex-row items-center justify-between pb-6 border-b">
+            <div class="flex items-center gap-4">
+                <button class="text-3xl md:text-4xl">&#9776;</button>
+                <img src="{% static 'logo.jpg' %}" alt="Gentle Hands Logo" class="h-16 md:h-20">
+            </div>
+            
+            <div class="flex gap-2 mt-4 md:mt-0">
+                <button id="backBtn" class="bg-pink-500 text-white px-6 py-3 rounded-lg font-semibold text-lg">Back</button>
+                <button id="addAppointmentBtn" class="bg-pink-500 text-white px-6 py-3 rounded-lg font-semibold text-lg">Add Appointment</button>
+            </div>
+        </div>
+
+        <div class="mt-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <input type="text" id="searchBar" placeholder="Search by patient name..." class="border px-4 py-2 w-full md:w-2/3 text-lg rounded-lg border-pink-500">
+            <select id="filterCategory" class="border px-4 py-2 w-full md:w-1/4 rounded-lg">
+                <option value="">All Categories</option>
+                <option value="General Checkup">General Checkup</option>
+                <option value="Dental">Dental</option>
+                <option value="Pediatrics">Pediatrics</option>
+            </select>
+        </div>
+
+        <h2 class="text-3xl font-bold text-center mt-6">Appointment List</h2>
+
+        <div class="mt-6 overflow-x-auto">
+            <table class="w-full border-collapse border border-gray-400 text-left text-lg md:text-xl">
+                <thead class="bg-gray-400 text-white">
+                    <tr>
+                        <th class="border border-gray-500 px-6 py-3 font-semibold">Patient Name</th>
+                        <th class="border border-gray-500 px-6 py-3 font-semibold">Medical Type</th>
+                        <th class="border border-gray-500 px-6 py-3 font-semibold">Appointment Date</th>
+                        <th class="border border-gray-500 px-6 py-3 font-semibold">Hospital Name</th>
+                        <th class="border border-gray-500 px-6 py-3 font-semibold">Medic Name</th>
+                        <th class="border border-gray-500 px-6 py-3 font-semibold">Reason</th>
+                    </tr>
+                </thead>
+                <tbody id="appointmentTableBody">
+                    <tr>
+                        <td class="border border-gray-500 px-6 py-4">John Doe</td>
+                        <td class="border border-gray-500 px-6 py-4">General Checkup</td>
+                        <td class="border border-gray-500 px-6 py-4">2025-04-15</td>
+                        <td class="border border-gray-500 px-6 py-4">City Hospital</td>
+                        <td class="border border-gray-500 px-6 py-4">Dr. Emily Carter</td>
+                        <td class="border border-gray-500 px-6 py-4">Routine health check</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-gray-500 px-6 py-4">Samantha Joe</td>
+                        <td class="border border-gray-500 px-6 py-4">General Checkup</td>
+                        <td class="border border-gray-500 px-6 py-4">2025-04-15</td>
+                        <td class="border border-gray-500 px-6 py-4">City Hospital</td>
+                        <td class="border border-gray-500 px-6 py-4">Dr. Emily Carter</td>
+                        <td class="border border-gray-500 px-6 py-4">Routine health check</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-gray-500 px-6 py-4">Mark Pingris</td>
+                        <td class="border border-gray-500 px-6 py-4">2025-04-15</td>
+                        <td class="border border-gray-500 px-6 py-4">City Hospital</td>
+                        <td class="border border-gray-500 px-6 py-4">Dr. Emily Carter</td>
+                        <td class="border border-gray-500 px-6 py-4">Routine health check</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="appointmentModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+            <h2 class="text-xl font-bold mb-4">Add Appointment</h2>
+            <input type="text" id="patientName" placeholder="Patient Name" class="border w-full px-4 py-2 mb-2 rounded-lg" required>
+            <select id="medicalType" class="border w-full px-4 py-2 mb-2 rounded-lg">
+                <option value="General Checkup">General Checkup</option>
+                <option value="Dental">Dental</option>
+                <option value="Pediatrics">Pediatrics</option>
+            </select>
+            <input type="date" id="appointmentDate" class="border w-full px-4 py-2 mb-2 rounded-lg" required>
+            <input type="text" id="hospitalName" placeholder="Hospital Name" class="border w-full px-4 py-2 mb-2 rounded-lg">
+            <input type="text" id="medicName" placeholder="Medic Name" class="border w-full px-4 py-2 mb-2 rounded-lg">
+            <input type="text" id="reason" placeholder="Reason" class="border w-full px-4 py-2 mb-2 rounded-lg">
+            <div class="flex justify-end gap-2">
+                <button id="closeModal" class="bg-gray-400 text-white px-4 py-2 rounded-lg">Cancel</button>
+                <button id="saveAppointment" class="bg-green-500 text-white px-4 py-2 rounded-lg">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("addAppointmentBtn").addEventListener("click", function() {
+            document.getElementById("appointmentModal").classList.remove("hidden");
+        });
+
+        document.getElementById("closeModal").addEventListener("click", function() {
+            document.getElementById("appointmentModal").classList.add("hidden");
+        });
+
+        document.getElementById("saveAppointment").addEventListener("click", function() {
+            let patientName = document.getElementById("patientName").value.trim();
+            let medicalType = document.getElementById("medicalType").value;
+            let appointmentDate = document.getElementById("appointmentDate").value;
+            let hospitalName = document.getElementById("hospitalName").value.trim();
+            let medicName = document.getElementById("medicName").value.trim();
+            let reason = document.getElementById("reason").value.trim();
+
+            if (!patientName || !appointmentDate) {
+                alert("Patient Name and Appointment Date are required.");
+                return;
+            }
+
+            let newRow = `<tr>
+                <td class='border border-gray-500 px-6 py-4'>${patientName}</td>
+                <td class='border border-gray-500 px-6 py-4'>${medicalType}</td>
+                <td class='border border-gray-500 px-6 py-4'>${appointmentDate}</td>
+                <td class='border border-gray-500 px-6 py-4'>${hospitalName}</td>
+                <td class='border border-gray-500 px-6 py-4'>${medicName}</td>
+                <td class='border border-gray-500 px-6 py-4'>${reason}</td>
+            </tr>`;
+
+            document.getElementById("appointmentTableBody").innerHTML += newRow;
+            document.getElementById("appointmentModal").classList.add("hidden");
+            document.getElementById("patientName").value = "";
+            document.getElementById("appointmentDate").value = "";
+            document.getElementById("hospitalName").value = "";
+            document.getElementById("medicName").value = "";
+            document.getElementById("reason").value = "";
+        });
+
+        document.getElementById("searchBar").addEventListener("input", function () {
+        let searchValue = this.value.toLowerCase();
+        let tableRows = document.querySelectorAll("#appointmentTableBody tr");
+
+        tableRows.forEach(row => {
+            let patientName = row.children[0].textContent.toLowerCase();
+            if (patientName.includes(searchValue)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+    </script>
+</body>
+</html>

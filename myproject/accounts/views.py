@@ -19,6 +19,8 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -36,8 +38,30 @@ def login_view(request):
 def dashboard(request):
     return render(request, 'dashboard.html')
 
+@login_required
 def dashboard_view(request):
     return render(request, 'dashboard.html')
 
+@login_required
 def medication_view(request):
     return render(request, 'medication.html')
+
+@login_required
+def illness_list(request):
+    return render(request, 'illness_list.html')
+
+@login_required
+def appointment_list(request):
+    return render(request, 'appointment_list.html')
+
+@login_required
+def immunization_list(request):
+    return render(request, 'immunization.html')
+
+@login_required
+def medic(request):
+    return render(request, 'medic.html')
+
+@login_required
+def growth_data(request):
+    return render(request, 'growth_data.html')
