@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Growth Record</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-200 flex justify-center items-center min-h-screen p-6">
+
+    <div class="w-full max-w-7xl bg-white p-10 rounded-xl shadow-lg">
+        <div class="flex flex-col md:flex-row justify-between items-center pb-6 border-b">
+            <div class="flex items-center gap-4">
+                <button class="text-4xl md:text-5xl">&#9776;</button>
+                <img src="logo.jpg" alt="Gentle Hands Logo" class="h-20 md:h-24">
+            </div>
+            <div class="flex gap-4">
+                <button id="backBtn" class="bg-pink-500 text-white px-6 py-3 rounded-xl text-lg font-semibold">
+                    Back
+                </button>
+                <button id="openFilter" class="bg-pink-500 text-white px-6 py-3 rounded-xl text-lg font-semibold">
+                    Filter
+                </button>
+            </div>
+        </div>
+        <h2 class="text-3xl md:text-4xl font-bold text-center py-6">
+            Growth Record for: <span class="text-black">Juan Batumbakal Jr.</span>
+        </h2>
+        <div class="overflow-x-auto">
+            <table class="w-full border border-gray-400 text-lg md:text-xl">
+                <thead class="bg-gray-300 text-black">
+                    <tr>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold">Date</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold">Age</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold">Weight</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold">Height</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold">HC</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold">CCT</th>
+                        <th class="border border-gray-500 px-6 py-4 font-semibold">Teeth</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border border-gray-500 px-6 py-4"></td>
+                        <td class="border border-gray-500 px-6 py-4"></td>
+                        <td class="border border-gray-500 px-6 py-4"></td>
+                        <td class="border border-gray-500 px-6 py-4"></td>
+                        <td class="border border-gray-500 px-6 py-4"></td>
+                        <td class="border border-gray-500 px-6 py-4"></td>
+                        <td class="border border-gray-500 px-6 py-4"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-11/12 md:w-1/3">
+            <h2 class="text-2xl font-bold mb-4 text-center">Growth Data Form</h2>
+            
+            <label class="block mb-2">Group Name:</label>
+            <select class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500"></select>
+            
+            <label class="block mb-2">First Name:</label>
+            <input type="text" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500">
+            
+            <label class="block mb-2">Last Name:</label>
+            <input type="text" class="border w-full px-4 py-2 mb-3 rounded-lg border-pink-500">
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block mb-2">Age:</label>
+                    <input type="number" min="0" class="border w-full px-4 py-2 rounded-lg border-pink-500">
+                </div>
+                <div>
+                    <label class="block mb-2">Weight (kg):</label>
+                    <input type="number" min="0" step="0.1" class="border w-full px-4 py-2 rounded-lg border-pink-500">
+                </div>
+                <div>
+                    <label class="block mb-2">Height (cm):</label>
+                    <input type="number" min="0" step="0.1" class="border w-full px-4 py-2 rounded-lg border-pink-500">
+                </div>
+                <div>
+                    <label class="block mb-2">Head (cm):</label>
+                    <input type="number" min="0" step="0.1" class="border w-full px-4 py-2 rounded-lg border-pink-500">
+                </div>
+                <div>
+                    <label class="block mb-2">Chest (cm):</label>
+                    <input type="number" min="0" step="0.1" class="border w-full px-4 py-2 rounded-lg border-pink-500">
+                </div>
+                <div>
+                    <label class="block mb-2">Teeth:</label>
+                    <div class="flex gap-2">
+                        <input type="number" min="0" max="32" class="border w-1/2 px-4 py-2 rounded-lg border-pink-500" placeholder="Upper">
+                        <input type="number" min="0" max="32" class="border w-1/2 px-4 py-2 rounded-lg border-pink-500" placeholder="Lower">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-center mt-6">
+                <button id="closeFilter" class="bg-pink-500 text-white px-8 py-3 rounded-lg font-semibold text-lg">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("openFilter").addEventListener("click", function() {
+            document.getElementById("filterModal").classList.remove("hidden");
+        });
+        document.getElementById("closeFilter").addEventListener("click", function() {
+            document.getElementById("filterModal").classList.add("hidden");
+        });
+        document.getElementById("filterModal").addEventListener("click", function(event) {
+            if (event.target === this) {
+                this.classList.add("hidden");
+            }
+        });
+        document.getElementById("backBtn").addEventListener("click", function() {
+            window.history.back();
+        });
+    </script>
+</body>
+</html>
