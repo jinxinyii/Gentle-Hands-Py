@@ -55,7 +55,11 @@
                         <td class="border border-gray-500 px-6 py-4 text-center">
                             <button class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 view-chart-btn" 
                                 data-child-id="{{ record.child.id }}" 
-                                data-child-name="{{ record.child.first_name }} {{ record.child.last_name }}">
+                                data-child-name="{{ record.child.first_name }} {{ record.child.last_name }}"
+                                data-child-gender="{{ record.child.gender }}"
+                                data-child-age="{{ record.age }}"
+                                data-child-weight="{{ record.weight }}"
+                                data-child-height="{{ record.height }}">
                                 View Growth Chart
                             </button>
                         </td>
@@ -171,30 +175,76 @@
             button.addEventListener('click', function () {
                 const childId = this.getAttribute('data-child-id');
                 const childName = this.getAttribute('data-child-name');
+                const childGender = this.getAttribute('data-child-gender'); // Add gender attribute
+                const childAge = this.getAttribute('data-child-age'); // Add age attribute
+                const childWeight = this.getAttribute('data-child-weight'); // Add weight attribute
+                const childHeight = this.getAttribute('data-child-height'); // Add height attribute
 
                 growthChartTitle.textContent = `Growth Chart for ${childName}`;
 
-                const growthData = {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'], //not finished
-                    bmi: [15, 16, 17, 18, 19], //not finished
-                };
+                // WHO growth chart data for boys and girls
+                let growthData;
+                if (childGender === 'Male') {
+                    growthData = {
+                        labels: ['Birth', '1 year', '2 years', '3 years', '4 years', '5 years'],
+                        weight: [3.3, 9.6, 12.3, 14.3, 16.3, 18.3], // Example WHO weight data for boys
+                        height: [49.9, 75.7, 87.8, 96.1, 102.7, 108.1], // Example WHO height data for boys
+                    };
+                } else if (childGender === 'Female') {
+                    growthData = {
+                        labels: ['Birth', '1 year', '2 years', '3 years', '4 years', '5 years'],
+                        weight: [3.2, 8.9, 11.5, 13.9, 15.9, 17.9], // Example WHO weight data for girls
+                        height: [49.1, 74.0, 86.4, 95.1, 101.8, 107.1], // Example WHO height data for girls
+                    };
+                }
 
                 if (growthChart) {
                     growthChart.destroy();
                 }
 
+                // Render the chart with WHO data and child's data
                 growthChart = new Chart(growthChartCanvas, {
                     type: 'line',
                     data: {
                         labels: growthData.labels,
-                        datasets: [{
-                            label: 'BMI',
-                            data: growthData.bmi,
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            borderWidth: 2,
-                            fill: true,
-                        }]
+                        datasets: [
+                            {
+                                label: 'WHO Weight (kg)',
+                                data: growthData.weight,
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderWidth: 2,
+                                fill: true,
+                            },
+                            {
+                                label: 'WHO Height (cm)',
+                                data: growthData.height,
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderWidth: 2,
+                                fill: true,
+                            },
+                            {
+                                label: `${childName}'s Weight (kg)`,
+                                data: [null, null, null, null, null, childWeight], // Add child's weight
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderWidth: 2,
+                                fill: true,
+                                pointStyle: 'circle',
+                                pointRadius: 5,
+                            },
+                            {
+                                label: `${childName}'s Height (cm)`,
+                                data: [null, null, null, null, null, childHeight], // Add child's height
+                                borderColor: 'rgba(153, 102, 255, 1)',
+                                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                                borderWidth: 2,
+                                fill: true,
+                                pointStyle: 'circle',
+                                pointRadius: 5,
+                            },
+                        ],
                     },
                     options: {
                         responsive: true,
@@ -208,13 +258,13 @@
                             x: {
                                 title: {
                                     display: true,
-                                    text: 'Months',
+                                    text: 'Age (Years)',
                                 },
                             },
                             y: {
                                 title: {
                                     display: true,
-                                    text: 'BMI',
+                                    text: 'Value',
                                 },
                                 beginAtZero: true,
                             },
