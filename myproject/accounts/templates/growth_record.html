@@ -6,6 +6,12 @@
     <title>Growth Record</title>
     <script src="https://cdn.tailwindcss.com"></script>
     {% load static %}
+    <style>
+        #growthChartModal .modal-content {
+            max-height: 80vh; /* Set a maximum height for the modal */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+    </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-start min-h-screen p-0">
 
@@ -117,9 +123,11 @@
     </div>
 
     <div id="growthChartModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
-        <div class="bg-white p-8 rounded-lg shadow-lg w-11/12 md:w-2/3">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-11/12 md:w-2/3 modal-content">
             <h2 id="growthChartTitle" class="text-2xl font-bold mb-4 text-center">Growth Chart</h2>
             <canvas id="growthChart" class="w-full h-64"></canvas>
+            <canvas id="lengthHeightChart" class="w-full h-64"></canvas>
+            <canvas id="weightChart" class="w-full h-64 mt-8"></canvas>
             <div class="flex justify-end mt-4">
                 <button id="closeGrowthChartModal" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Close</button>
             </div>
@@ -169,32 +177,33 @@
         const growthChartTitle = document.getElementById('growthChartTitle');
         const closeGrowthChartModal = document.getElementById('closeGrowthChartModal');
         const growthChartCanvas = document.getElementById('growthChart');
-        let growthChart;
+        const lengthHeightChartCanvas = document.getElementById('lengthHeightChart');
+        const weightChartCanvas = document.getElementById('weightChart');
+        let growthChart, lengthHeightChart, weightChart;
 
         viewChartButtons.forEach(button => {
             button.addEventListener('click', function () {
                 const childId = this.getAttribute('data-child-id');
                 const childName = this.getAttribute('data-child-name');
-                const childGender = this.getAttribute('data-child-gender'); // Add gender attribute
-                const childAge = this.getAttribute('data-child-age'); // Add age attribute
-                const childWeight = this.getAttribute('data-child-weight'); // Add weight attribute
-                const childHeight = this.getAttribute('data-child-height'); // Add height attribute
+                const childGender = this.getAttribute('data-child-gender');
+                const childAge = this.getAttribute('data-child-age');
+                const childWeight = this.getAttribute('data-child-weight');
+                const childHeight = this.getAttribute('data-child-height');
 
                 growthChartTitle.textContent = `Growth Chart for ${childName}`;
 
-                // WHO growth chart data for boys and girls
                 let growthData;
                 if (childGender === 'Male') {
                     growthData = {
                         labels: ['Birth', '1 year', '2 years', '3 years', '4 years', '5 years'],
-                        weight: [3.3, 9.6, 12.3, 14.3, 16.3, 18.3], // Example WHO weight data for boys
-                        height: [49.9, 75.7, 87.8, 96.1, 102.7, 108.1], // Example WHO height data for boys
+                        weight: [3.3, 9.6, 12.3, 14.3, 16.3, 18.3],
+                        height: [49.9, 75.7, 87.8, 96.1, 102.7, 108.1],
                     };
                 } else if (childGender === 'Female') {
                     growthData = {
                         labels: ['Birth', '1 year', '2 years', '3 years', '4 years', '5 years'],
-                        weight: [3.2, 8.9, 11.5, 13.9, 15.9, 17.9], // Example WHO weight data for girls
-                        height: [49.1, 74.0, 86.4, 95.1, 101.8, 107.1], // Example WHO height data for girls
+                        weight: [3.2, 8.9, 11.5, 13.9, 15.9, 17.9],
+                        height: [49.1, 74.0, 86.4, 95.1, 101.8, 107.1], 
                     };
                 }
 
@@ -202,7 +211,6 @@
                     growthChart.destroy();
                 }
 
-                // Render the chart with WHO data and child's data
                 growthChart = new Chart(growthChartCanvas, {
                     type: 'line',
                     data: {
@@ -226,7 +234,7 @@
                             },
                             {
                                 label: `${childName}'s Weight (kg)`,
-                                data: [null, null, null, null, null, childWeight], // Add child's weight
+                                data: [null, null, null, null, null, childWeight],
                                 borderColor: 'rgba(75, 192, 192, 1)',
                                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                                 borderWidth: 2,
@@ -236,7 +244,7 @@
                             },
                             {
                                 label: `${childName}'s Height (cm)`,
-                                data: [null, null, null, null, null, childHeight], // Add child's height
+                                data: [null, null, null, null, null, childHeight],
                                 borderColor: 'rgba(153, 102, 255, 1)',
                                 backgroundColor: 'rgba(153, 102, 255, 0.2)',
                                 borderWidth: 2,
@@ -265,6 +273,126 @@
                                 title: {
                                     display: true,
                                     text: 'Value',
+                                },
+                                beginAtZero: true,
+                            },
+                        },
+                    },
+                });
+
+                if (lengthHeightChart) {
+                    lengthHeightChart.destroy();
+                }
+                lengthHeightChart = new Chart(lengthHeightChartCanvas, {
+                    type: 'line',
+                    data: {
+                        labels: ['Birth', '2 months', '4 months', '6 months', '8 months', '10 months', '1 year', '2 years', '3 years', '4 years', '5 years'],
+                        datasets: [
+                            {
+                                label: '97th Percentile',
+                                data: [54.7, 62.1, 65.9, 69.2, 72.0, 74.4, 76.4, 87.8, 96.1, 102.7, 108.1],
+                                borderColor: 'rgba(255, 0, 0, 1)',
+                                backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                                borderWidth: 2,
+                                fill: true,
+                            },
+                            {
+                                label: '50th Percentile',
+                                data: [49.9, 57.1, 60.8, 64.0, 66.8, 69.2, 71.3, 82.3, 90.0, 96.1, 101.1],
+                                borderColor: 'rgba(0, 255, 0, 1)',
+                                backgroundColor: 'rgba(0, 255, 0, 0.2)',
+                                borderWidth: 2,
+                                fill: true,
+                            },
+                            {
+                                label: '3rd Percentile',
+                                data: [45.4, 52.1, 55.7, 58.8, 61.5, 63.8, 65.8, 76.3, 83.0, 88.1, 92.1],
+                                borderColor: 'rgba(0, 0, 255, 1)',
+                                backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                                borderWidth: 2,
+                                fill: true,
+                            },
+                        ],
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                            },
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Age (Years)',
+                                },
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Length/Height (cm)',
+                                },
+                                beginAtZero: true,
+                            },
+                        },
+                    },
+                });
+
+                if (weightChart) {
+                    weightChart.destroy();
+                }
+                weightChart = new Chart(weightChartCanvas, {
+                    type: 'line',
+                    data: {
+                        labels: ['Birth', '2 months', '4 months', '6 months', '8 months', '10 months', '1 year', '2 years', '3 years', '4 years', '5 years'],
+                        datasets: [
+                            {
+                                label: '97th Percentile',
+                                data: [4.4, 6.6, 7.9, 8.8, 9.5, 10.1, 10.6, 12.3, 14.3, 16.3, 18.3],
+                                borderColor: 'rgba(255, 0, 0, 1)',
+                                backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                                borderWidth: 2,
+                                fill: true,
+                            },
+                            {
+                                label: '50th Percentile',
+                                data: [3.3, 5.1, 6.4, 7.4, 8.1, 8.7, 9.2, 10.8, 12.3, 14.0, 15.5],
+                                borderColor: 'rgba(0, 255, 0, 1)',
+                                backgroundColor: 'rgba(0, 255, 0, 0.2)',
+                                borderWidth: 2,
+                                fill: true,
+                            },
+                            {
+                                label: '3rd Percentile',
+                                data: [2.5, 4.0, 5.1, 6.0, 6.6, 7.1, 7.5, 9.0, 10.3, 11.8, 13.0],
+                                borderColor: 'rgba(0, 0, 255, 1)',
+                                backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                                borderWidth: 2,
+                                fill: true,
+                            },
+                        ],
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                            },
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Age (Years)',
+                                },
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Weight (kg)',
                                 },
                                 beginAtZero: true,
                             },
