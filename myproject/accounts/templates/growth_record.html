@@ -186,9 +186,14 @@
                 const childId = this.getAttribute('data-child-id');
                 const childName = this.getAttribute('data-child-name');
                 const childGender = this.getAttribute('data-child-gender');
-                const childAge = this.getAttribute('data-child-age');
-                const childWeight = this.getAttribute('data-child-weight');
-                const childHeight = this.getAttribute('data-child-height');
+                const childAge = parseFloat(this.getAttribute('data-child-age'));
+                const childWeight = parseFloat(this.getAttribute('data-child-weight'));
+                const childHeight = parseFloat(this.getAttribute('data-child-height'));
+
+                if (childAge > 5) {
+                    alert(`${childName} is above 5 years old. No growth chart available.`);
+                    return;
+                }
 
                 growthChartTitle.textContent = `Growth Chart for ${childName}`;
 
@@ -229,6 +234,15 @@
                             '3rd': [43.2, 51.6, 56.4, 59.7, 62.3, 64.4, 66.3, 75.2, 83.0, 89.7, 95.4],
                         },
                     };
+                }
+
+                const ageIndex = growthData.labels.findIndex(label => label === `${childAge} years` || label === `${childAge} year`);
+
+                const childWeightDataset = new Array(growthData.labels.length).fill(null);
+                const childHeightDataset = new Array(growthData.labels.length).fill(null);
+                if (ageIndex !== -1) {
+                    childWeightDataset[ageIndex] = childWeight;
+                    childHeightDataset[ageIndex] = childHeight;
                 }
 
                 if (growthChart) {
@@ -286,7 +300,7 @@
                             },
                             {
                                 label: `${childName}'s Weight (kg)`,
-                                data: [null, null, null, null, null, null, null, null, null, null, childWeight],
+                                data: childWeightDataset,
                                 borderColor: 'rgba(75, 192, 192, 1)',
                                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                                 borderWidth: 2,
@@ -370,7 +384,7 @@
                             },
                             {
                                 label: `${childName}'s Height (cm)`,
-                                data: [null, null, null, null, null, null, null, null, null, null, childHeight],
+                                data: childHeightDataset,
                                 borderColor: 'rgba(75, 192, 192, 1)',
                                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                                 borderWidth: 2,
