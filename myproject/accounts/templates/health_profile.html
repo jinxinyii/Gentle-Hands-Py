@@ -99,21 +99,167 @@
     </section>
     <section>
         <p class="font-bold italic mb-1">GROWTH RECORD</p>
-        <p class="mb-6">See table 1 for full details</p>
-        <p class="mb-6">
-            The following chart height and weight compared to WHO median and 10 and 90 percentile:
-        </p>
-        <div class="flex flex-col md:flex-row md:space-x-12 space-y-8 md:space-y-0 justify-center">
-            <img
-                alt="Bar chart showing height and weight compared to WHO median and 10 and 90 percentile"
-                class="w-full max-w-xs"
-            />
-            <img
-                alt="Bar chart showing height and weight compared to WHO median and 10 and 90 percentile"
-                class="w-full max-w-xs"
-            />
-        </div>
+        {% if child.current_age > 5 %}
+            <p class="mb-6 text-red-500 font-semibold">
+                The child is above 5 years old. No growth chart is available.
+            </p>
+        {% else %}
+            <p class="mb-6">See table 1 for full details</p>
+            <p class="mb-6">
+                The following chart shows height and weight compared to WHO median and 10th and 90th percentiles:
+            </p>
+            <div class="space-y-6">
+                <canvas id="growthChart" class="w-full h-64"></canvas>
+                <canvas id="lengthHeightChart" class="w-full h-64"></canvas>
+            </div>
+        {% endif %}
     </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            {% if child.current_age <= 5 %}
+            const growthData = {
+                labels: ['Birth', '2 months', '4 months', '6 months', '8 months', '10 months', '1 year', '2 years', '3 years', '4 years', '5 years'],
+                weightPercentiles: {
+                    '97th': [4.4, 6.6, 7.9, 8.8, 9.5, 10.1, 10.6, 12.3, 14.3, 16.3, 18.3],
+                    '85th': [4.0, 6.0, 7.3, 8.2, 8.9, 9.5, 10.0, 11.6, 13.5, 15.4, 17.3],
+                    '50th': [3.3, 5.1, 6.4, 7.4, 8.1, 8.7, 9.2, 10.8, 12.3, 14.0, 15.5],
+                    '15th': [2.9, 4.5, 5.7, 6.6, 7.2, 7.7, 8.1, 9.6, 11.0, 12.5, 13.9],
+                    '3rd': [2.5, 4.0, 5.1, 6.0, 6.6, 7.1, 7.5, 9.0, 10.3, 11.8, 13.0],
+                },
+                heightPercentiles: {
+                    '97th': [53.7, 61.1, 65.9, 69.2, 71.9, 74.1, 76.1, 87.8, 96.1, 103.3, 110.0],
+                    '85th': [52.0, 59.5, 64.3, 67.6, 70.3, 72.5, 74.5, 85.8, 94.0, 101.2, 107.8],
+                    '50th': [49.9, 57.4, 62.2, 65.5, 68.0, 70.1, 71.9, 82.3, 90.8, 97.9, 104.0],
+                    '15th': [48.0, 55.5, 60.3, 63.5, 65.9, 68.0, 69.7, 79.8, 88.2, 95.2, 101.2],
+                    '3rd': [46.3, 53.8, 58.6, 61.8, 64.2, 66.2, 67.8, 77.8, 86.0, 92.9, 98.8],
+                },
+            };
+
+            // Pass Django variables into JavaScript
+            const childData = {
+                firstName: "{{ child.first_name|escapejs }}",
+                currentAge: {{ child.current_age }},
+                weight: {{ weight|default:0 }},
+                height: {{ height|default:0 }},
+            };
+
+            const childWeightDataset = new Array(growthData.labels.length).fill(null);
+            const childHeightDataset = new Array(growthData.labels.length).fill(null);
+            const ageIndex = growthData.labels.findIndex(label => label === `${childData.currentAge} years`);
+            if (ageIndex !== -1) {
+                childWeightDataset[ageIndex] = childData.weight;
+                childHeightDataset[ageIndex] = childData.height;
+            }
+
+            const growthChartCanvas = document.getElementById('growthChart');
+            const lengthHeightChartCanvas = document.getElementById('lengthHeightChart');
+
+            new Chart(growthChartCanvas, {
+                type: 'line',
+                data: {
+                    labels: growthData.labels,
+                    datasets: [
+                        {
+                            label: '97th Percentile',
+                            data: growthData.weightPercentiles['97th'],
+                            borderColor: 'rgba(255, 0, 0, 1)',
+                            backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                            borderWidth: 2,
+                            fill: true,
+                        },
+                        {
+                            label: `${childData.firstName}'s Weight (kg)`,
+                            data: childWeightDataset,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderWidth: 2,
+                            fill: true,
+                            pointStyle: 'circle',
+                            pointRadius: 5,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                        },
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Age (Years)',
+                            },
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Weight (kg)',
+                            },
+                            beginAtZero: true,
+                        },
+                    },
+                },
+            });
+
+            new Chart(lengthHeightChartCanvas, {
+                type: 'line',
+                data: {
+                    labels: growthData.labels,
+                    datasets: [
+                        {
+                            label: '97th Percentile',
+                            data: growthData.heightPercentiles['97th'],
+                            borderColor: 'rgba(255, 0, 0, 1)',
+                            backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                            borderWidth: 2,
+                            fill: true,
+                        },
+                        {
+                            label: `${childData.firstName}'s Height (cm)`,
+                            data: childHeightDataset,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderWidth: 2,
+                            fill: true,
+                            pointStyle: 'circle',
+                            pointRadius: 5,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                        },
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Age (Years)',
+                            },
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Height (cm)',
+                            },
+                            beginAtZero: true,
+                        },
+                    },
+                },
+            });
+            {% endif %}
+        });
+    </script>
 </main>
 </body>
 </html>
