@@ -104,7 +104,7 @@
                 The child is above 5 years old. No growth chart is available.
             </p>
         {% else %}
-            <p class="mb-6">See table 1 for full details</p>
+            <p class="mb-6">See Table 1 and 2 below for detailed growth records.</p>
             <p class="mb-6">
                 The following chart shows height and weight compared to WHO median and 10th and 90th percentiles:
             </p>
@@ -137,7 +137,6 @@
                 },
             };
 
-            // Pass Django variables into JavaScript
             const childData = {
                 firstName: "{{ child.first_name|escapejs }}",
                 currentAge: {{ child.current_age }},
@@ -166,6 +165,38 @@
                             data: growthData.weightPercentiles['97th'],
                             borderColor: 'rgba(255, 0, 0, 1)',
                             backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                            borderWidth: 2,
+                            fill: true,
+                        },
+                        {
+                            label: '85th Percentile',
+                            data: growthData.weightPercentiles['85th'],
+                            borderColor: 'rgba(255, 165, 0, 1)',
+                            backgroundColor: 'rgba(255, 165, 0, 0.2)',
+                            borderWidth: 2,
+                            fill: true,
+                        },
+                        {
+                            label: '50th Percentile',
+                            data: growthData.weightPercentiles['50th'],
+                            borderColor: 'rgba(0, 255, 0, 1)',
+                            backgroundColor: 'rgba(0, 255, 0, 0.2)',
+                            borderWidth: 2,
+                            fill: true,
+                        },
+                        {
+                            label: '15th Percentile',
+                            data: growthData.weightPercentiles['15th'],
+                            borderColor: 'rgba(0, 191, 255, 1)',
+                            backgroundColor: 'rgba(0, 191, 255, 0.2)',
+                            borderWidth: 2,
+                            fill: true,
+                        },
+                        {
+                            label: '3rd Percentile',
+                            data: growthData.weightPercentiles['3rd'],
+                            borderColor: 'rgba(0, 0, 255, 1)',
+                            backgroundColor: 'rgba(0, 0, 255, 0.2)',
                             borderWidth: 2,
                             fill: true,
                         },
@@ -217,6 +248,38 @@
                             data: growthData.heightPercentiles['97th'],
                             borderColor: 'rgba(255, 0, 0, 1)',
                             backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                            borderWidth: 2,
+                            fill: true,
+                        },
+                        {
+                            label: '85th Percentile',
+                            data: growthData.heightPercentiles['85th'],
+                            borderColor: 'rgba(255, 165, 0, 1)', 
+                            backgroundColor: 'rgba(255, 165, 0, 0.2)',
+                            borderWidth: 2,
+                            fill: true,
+                        },
+                        {
+                            label: '50th Percentile',
+                            data: growthData.heightPercentiles['50th'],
+                            borderColor: 'rgba(0, 255, 0, 1)', 
+                            backgroundColor: 'rgba(0, 255, 0, 0.2)',
+                            borderWidth: 2,
+                            fill: true,
+                        },
+                        {
+                            label: '15th Percentile',
+                            data: growthData.heightPercentiles['15th'],
+                            borderColor: 'rgba(0, 191, 255, 1)', 
+                            backgroundColor: 'rgba(0, 191, 255, 0.2)',
+                            borderWidth: 2,
+                            fill: true,
+                        },
+                        {
+                            label: '3rd Percentile',
+                            data: growthData.heightPercentiles['3rd'],
+                            borderColor: 'rgba(0, 0, 255, 1)', 
+                            backgroundColor: 'rgba(0, 0, 255, 0.2)',
                             borderWidth: 2,
                             fill: true,
                         },
